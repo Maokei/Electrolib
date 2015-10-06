@@ -3,18 +3,20 @@
 
 /**
  * Fills res_array with e12 resistors, returns an integer with
- * how many e12 resistors that are needed.
+ * how many e12 resistors that are needed to match the original resistance.a
+ * return int
  */
 int e_resistance(float orig_resistance, float *res_array) {
     /* Init vars */
-    float available_e12[12] = {82.0, 68.0, 56.0, 47.0, 39.0, 33.0, 27.0, 22.0, 18.0, 15.0, 12.0, 10};
-    int i;
-    int component_count = 0;
-    bool is_done = false;
+    int available_e12[12] = { 82, 68, 56, 47, 39, 33, 27, 22, 18, 15, 12, 10 };
+    int i; 
+    int component_count = 0; /**< Number of filled components */
+    bool is_done = false; /**< Boolean switch for the while loop */
 
     int multiplier = 1;
     int number = orig_resistance;
-
+    
+    /* Count number of digits */
     while(number != 0) {
         number = number / 10;
         multiplier *= 10;
@@ -24,7 +26,7 @@ int e_resistance(float orig_resistance, float *res_array) {
     
     while(!is_done) {
         for(i = 0; i < 12; i++) {
-            int resistor_ohm = (available_e12[i] * multiplier);
+            float resistor_ohm = (available_e12[i] * multiplier);
 
             if(resistor_ohm <= orig_resistance) {
                 res_array[component_count] = resistor_ohm;
@@ -34,7 +36,7 @@ int e_resistance(float orig_resistance, float *res_array) {
             }
         }
         
-        if(orig_resistance == 0) {
+        if(orig_resistance == 0 || component_count == 3) {
             is_done = true;
         }
 
@@ -42,13 +44,14 @@ int e_resistance(float orig_resistance, float *res_array) {
         multiplier /= 10;
     }
     
+    /* Fill slots we don't need with zeroes */
+    if(component_count < 3) {
 
+        for(i = component_count; i < 3; i++) {
+            res_array[i] = 0;
+        }
+    }
 
-    // Pseudo
-    // for e12 series in ohm 
-    //   if([] < orig_resistance)
-    //     res_array[++] = e12_series[val]
-    //     count++
     return component_count;
 }
 

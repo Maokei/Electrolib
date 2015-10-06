@@ -4,8 +4,9 @@ CC = gcc
 
 # Flags
 ALL_ERRORS      = -Wall
-COMPILE_FLAGS	= -c $(ALL_ERRORS) -Wunused-variable
-COMPLETE_FLAGS  = -o $(EXEC_FILE) $(ALL_ERRORS) -Wunused-variable
+PREFS_FLAGS 	= -Wunused-variable
+COMPILE_FLAGS	= -c $(ALL_ERRORS) $(PREFS_FLAGS)
+COMPLETE_FLAGS  = -o $(EXEC_FILE) $(ALL_ERRORS) $(PREFS_FLAGS)
 
 # Base filenames
 MAIN			= main
