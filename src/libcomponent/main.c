@@ -3,12 +3,11 @@
 #include "libcomponent.h"
 
 int main() {
-    /* 3 for now, should be set to numberOfComponents in finished program */
     float resistors[3];
     float orig_res;
     int i;
 
-    orig_res = 8792;
+    orig_res = 87792;
 
     int count = e_resistance(orig_res, resistors);
     printf("Resistors needed: %d\n", count);

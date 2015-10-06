@@ -15,7 +15,8 @@ int e_resistance(float orig_resistance, float *res_array) {
 
     int multiplier = 1;
     int number = orig_resistance;
-
+    
+    /* Count number of digits */
     while(number != 0) {
         number = number / 10;
         multiplier *= 10;
@@ -43,6 +44,7 @@ int e_resistance(float orig_resistance, float *res_array) {
         multiplier /= 10;
     }
     
+    /* Fill slots we don't need with zeroes */
     if(component_count < 3) {
 
         for(i = component_count; i < 3; i++) {
