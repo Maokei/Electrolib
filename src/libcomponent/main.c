@@ -6,7 +6,7 @@ int main() {
     float resistors[3];
     int i;
 
-    int count = e_resistance(1398, resistors);
+    int count = e_resistance(1350, resistors);
     printf("Resistors needed: %d\n", count);
 
     for(i = 0; i < count; i++) {

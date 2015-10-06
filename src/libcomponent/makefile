@@ -4,12 +4,12 @@ CC = gcc
 
 # Flags
 ALL_ERRORS      = -Wall
-COMPILE_FLAGS	= -c $(ALL_ERRORS)
-COMPLETE_FLAGS  = -o $(EXEC_FILE) $(ALL_ERRORS)
+COMPILE_FLAGS	= -c $(ALL_ERRORS) -Wunused-variable
+COMPLETE_FLAGS  = -o $(EXEC_FILE) $(ALL_ERRORS) -Wunused-variable
 
 # Base filenames
-MAIN    		= main
-LIBCOMPONENT 	= libcomponent
+MAIN			= main
+LIBCOMPONENT	= libcomponent
 
 # File lists
 OBJECTS = $(MAIN).o $(LIBCOMPONENT).o
@@ -28,6 +28,8 @@ $(EXEC_FILE): $(OBJECTS)
 $(MAIN).o: $(MAIN).c $(LIBCOMPONENT).h
 	$(CC) $(COMPILE_FLAGS) $<
 
+$(LIBCOMPONENT).o: $(LIBCOMPONENT).c $(LIBCOMPONENT).h
+	$(CC) $(COMPILE_FLAGS) $<
 
 # Fallback for .o targets
 %.o: %.c
