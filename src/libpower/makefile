@@ -9,8 +9,8 @@ libpower.o: libpower.c libpower.h
 libpower.so: libpower.o
 	gcc -shared -o libpower.so libpower.o
 
-main: main.c libpower.so
-	gcc $(LIBS) -Wall main.c -o Test -lm
+test: test.c libpower.so
+	gcc $(LIBS) -Wall test.c -o Test -lm
 
 install:
 	mv libpower.so /usr/lib/
