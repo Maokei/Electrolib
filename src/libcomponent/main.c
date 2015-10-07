@@ -4,20 +4,23 @@
 
 int main() {
     float resistors[3];
-    float orig_res;
+    float orig_res = 0.0;
     int i;
-
-    orig_res = 87792;
-
-    int count = e_resistance(orig_res, resistors);
-    printf("Resistors needed: %d\n", count);
-
-    printf("Targeted resistance in ohm: %g\n", orig_res);
     
 
-    printf("Ersättningsresistancer i E12-serien kopplade i serie:");
+    printf("Ange en resistans: ");
+    scanf("%f", &orig_res);
+    
+    int count = e_resistance(orig_res, resistors);
+    
+    printf("---- Resultat ----\n");
+    printf("Resistorer som behövs: %d\n", count);
+    printf("Den efterfrågade resistansen: %g\n", orig_res);
+
+    printf("Ersättningsresistanser i E12-serien kopplade i serie:");
     for(i = 0; i < 3; i++) {
-        if(resistors[i] != 0) {
+        // If array holds a resistor, print it. Print with comma if not last element
+        if(resistors[i] > 0.0) {
             if(i == (count - 1)) {
                 printf(" %g", resistors[i]);
             } else {
