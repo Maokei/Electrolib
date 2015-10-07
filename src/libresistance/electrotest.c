@@ -40,7 +40,7 @@ int main()
 
 float* new_array(int n)
 {
- float *array = (float*)malloc(n*sizeof(int));
+ float *array = (float*)malloc(n*sizeof(float));
 
  if(array == NULL)
  {
