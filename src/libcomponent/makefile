@@ -6,9 +6,8 @@ CC = gcc
 ALL_ERRORS      = -Wall -Werror
 PREFS_FLAGS 	= -Wunused-variable
 COMPILE_FLAGS	= -c -fPIC $(ALL_ERRORS) $(PREFS_FLAGS)
-SHARED_FLAGS	= -shared -fPIC -o $(LIBCOMPONENT).so
-COMPLETE_FLAGS  = -o $(EXEC_FILE) $(ALL_ERRORS) $(PREFS_FLAGS) \
--L. -lm
+SHARED_FLAGS	= -shared -fPIC -o $(LIBCOMPONENT).so 
+COMPLETE_FLAGS  = $(ALL_ERRORS) $(PREFS_FLAGS) -lm -o $(EXEC_FILE)
 
 # Base filenames
 MAIN			= main
@@ -23,22 +22,18 @@ all: $(EXEC_FILE)
 
 # To create program1 we need the compiled files to complete the program.
 $(EXEC_FILE): $(MAIN).c $(LIBCOMPONENT).so
-	$(CC) $(COMPLETE_FLAGS) $^
+	$(CC) $^ $(COMPLETE_FLAGS)
 
 $(LIBCOMPONENT).so: $(LIBCOMPONENT).o 
 	$(CC) $(SHARED_FLAGS) $^
 
 $(LIBCOMPONENT).o: $(LIBCOMPONENT).c $(LIBCOMPONENT).h
-	$(CC) $(COMPILE_FLAGS) $<
-
-# Fallback for .o targets
-%.o: %.c
-	$(CC) $(COMPILE_FLAGS) $<
+	$(CC) $(COMPILE_FLAGS) $^
 
 
 .PHONY: clean
 clean:
-	rm -f ./*.o
+	rm -f ./*.o ./*.gch
 	rm -f $(EXEC_FILE)
 	# Removed build files
 
@@ -51,5 +46,5 @@ install: $(LIBCOMPONENT).so
 
 .PHONY: uninstall
 uninstall:
-	sudo rm /usr/local/bin/$(EXEC_FILE)
+	sudo rm /usr/lib/$(LIBCOMPONENT).so
 	# Finished task uninstall.

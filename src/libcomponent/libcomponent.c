@@ -1,54 +1,53 @@
+#include <math.h>
 #include <stdio.h>
 #include <stdbool.h>
 
 /**
  * Fills res_array with e12 resistors, returns an integer with
- * how many e12 resistors that are needed to match the original resistance.a
+ * how many e12 resistors that are needed to match the original resistance
  * return int
  */
 int e_resistance(float orig_resistance, float *res_array) {
     /* Init vars */
-    int available_e12[12] = { 82, 68, 56, 47, 39, 33, 27, 22, 18, 15, 12, 10 };
-    int i; 
-    int component_count = 0; /**< Number of filled components */
+    float available_e12[12] = { 8.2, 6.8, 5.6, 4.7, 3.9, 3.3, 2.7, 2.2, 1.8, 1.5, 1.2, 1.0 };
     bool is_done = false; /**< Boolean switch for the while loop */
 
-    int multiplier = 1;
-    int number = orig_resistance;
-    
-    /* Count number of digits */
-    while(number != 0) {
-        number = number / 10;
-        multiplier *= 10;
-    }
-    /* Only count zeroes (base ten) */
-    multiplier /= 10;
-    
+    int component_count = 0; /**< Number of filled components */
+    int zeroes = log10(orig_resistance);
+    int multiplier = pow(10, zeroes);
+    int current_iteration = 0;
+    int i;
+
     while(!is_done) {
         for(i = 0; i < 12; i++) {
             float resistor_ohm = (available_e12[i] * multiplier);
-
+            
             if(resistor_ohm <= orig_resistance) {
                 res_array[component_count] = resistor_ohm;
-                component_count++;
                 orig_resistance -= resistor_ohm;
+                component_count++;
                 break;
             }
         }
         
-        if(orig_resistance == 0 || component_count == 3) {
+        /* Smallest possible e12 resistor here is 1, also finish while loop if we have 3 resistors */
+        if(orig_resistance < 1 || component_count == 3) {
             is_done = true;
         }
-
-        /* If the above for loop does not find a suitable component we need to reduce our multiplier */
-        multiplier /= 10;
+        
+        /* Try each level of multiplication max 3 times */
+        current_iteration++;
+        if(current_iteration == 3) {
+            /* Go to next multiplication level and reset the iteration count */
+            multiplier /= 10;
+            current_iteration = 0;
+        }    
     }
     
     /* Fill slots we don't need with zeroes */
     if(component_count < 3) {
-
         for(i = component_count; i < 3; i++) {
-            res_array[i] = 0.0;
+            res_array[i] = 0.0f;
         }
     }
 

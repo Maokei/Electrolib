@@ -10,6 +10,7 @@ src/libcomponent/program_libcomp
 *.exe
 *.o
 *.so
+*.gch
 
 # OS generated files #
 ######################
