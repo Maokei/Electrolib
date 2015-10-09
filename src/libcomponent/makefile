@@ -3,31 +3,30 @@
 CC = gcc
 
 # Flags
-ALL_ERRORS      = -Wall
+ALL_ERRORS      = -Wall -Werror
 PREFS_FLAGS 	= -Wunused-variable
-COMPILE_FLAGS	= -c $(ALL_ERRORS) $(PREFS_FLAGS)
-COMPLETE_FLAGS  = -o $(EXEC_FILE) $(ALL_ERRORS) $(PREFS_FLAGS)
+COMPILE_FLAGS	= -c -fPIC $(ALL_ERRORS) $(PREFS_FLAGS)
+SHARED_FLAGS	= -shared -fPIC -o $(LIBCOMPONENT).so
+COMPLETE_FLAGS  = -o $(EXEC_FILE) $(ALL_ERRORS) $(PREFS_FLAGS) \
+-L. -lm
 
 # Base filenames
 MAIN			= main
 LIBCOMPONENT	= libcomponent
 
-# File lists
-OBJECTS = $(MAIN).o $(LIBCOMPONENT).o
-
 # Finished program name
-EXEC_FILE = program_libcomp
+EXEC_FILE 	 = program_libcomp
 
 
 
 all: $(EXEC_FILE)
 
 # To create program1 we need the compiled files to complete the program.
-$(EXEC_FILE): $(OBJECTS)
+$(EXEC_FILE): $(MAIN).c $(LIBCOMPONENT).so
 	$(CC) $(COMPLETE_FLAGS) $^
 
-$(MAIN).o: $(MAIN).c $(LIBCOMPONENT).h
-	$(CC) $(COMPILE_FLAGS) $<
+$(LIBCOMPONENT).so: $(LIBCOMPONENT).o 
+	$(CC) $(SHARED_FLAGS) $^
 
 $(LIBCOMPONENT).o: $(LIBCOMPONENT).c $(LIBCOMPONENT).h
 	$(CC) $(COMPILE_FLAGS) $<
@@ -45,8 +44,8 @@ clean:
 
 
 .PHONY: install
-install: $(EXEC_FILE)
-	sudo cp program1 /usr/local/bin
+install: $(LIBCOMPONENT).so
+	sudo cp $^ /usr/lib/$^
 	# Finished task install.
 
 
