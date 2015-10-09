@@ -34,7 +34,6 @@ $(LIBCOMPONENT).o: $(LIBCOMPONENT).c $(LIBCOMPONENT).h
 .PHONY: clean
 clean:
 	rm -f ./*.o ./*.gch
-	rm -f $(EXEC_FILE)
 	# Removed build files
 
 

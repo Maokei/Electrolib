@@ -3,7 +3,11 @@
 #include "libcomponent.h"
 
 int main() {
+    float *r_pointer;
     float resistors[3];
+
+    r_pointer = resistors;
+
     float orig_res = 0.0f;
     float newtotal = 0.0f;
     int i;
@@ -12,7 +16,7 @@ int main() {
     printf("Ange en resistans: ");
     scanf("%f", &orig_res);
     
-    int count = e_resistance(orig_res, resistors);
+    int count = e_resistance(orig_res, r_pointer);
     
     printf("---- Resultat ----\n");
     printf("Resistorer som behövs: %d\n", count);
