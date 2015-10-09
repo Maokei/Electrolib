@@ -3,11 +3,10 @@
 CC = gcc
 
 # Flags
-ALL_ERRORS      = -Wall -Werror
-PREFS_FLAGS 	= -Wunused-variable
-COMPILE_FLAGS	= -c -fPIC $(ALL_ERRORS) $(PREFS_FLAGS)
-SHARED_FLAGS	= -shared -fPIC -o $(LIBCOMPONENT).so 
-COMPLETE_FLAGS  = $(ALL_ERRORS) $(PREFS_FLAGS) -lm -o $(EXEC_FILE)
+FLAGS			= -Wall -Werror
+COMPILE_FLAGS	= $(FLAGS) -c -fPIC
+SHARED_FLAGS	= $(FLAGS) -shared -fPIC -o $(LIBCOMPONENT).so 
+COMPLETE_FLAGS  = $(FLAGS) -lm -o $(EXEC_FILE)
 
 # Base filenames
 MAIN			= main
