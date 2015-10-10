@@ -31,7 +31,8 @@ float calc_resistance(int count, char conn, float *array)
 	{
 		if(array[i] == 0.0)
 		{
-			return 0;
+			totalResistance = 0;
+			return totalResistance;
 		}
 
 		temp += 1/array[i];
