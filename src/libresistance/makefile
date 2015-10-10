@@ -11,7 +11,6 @@ COMPLETE_FLAGS  = $(FLAGS) -lm -o $(EXEC_FILE)
 
 # Base filenames
 MAIN		= electrotest
-#LIBRESISTANCE	= resistance
 LIBRESISTANCE	= libresistance
 
 # Finished program name
