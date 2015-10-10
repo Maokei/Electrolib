@@ -1,17 +1,18 @@
 # Sanel Merdovic
 # 2015-10-09
 
+# Compiler directive
 CC = gcc
 
 # Flags
 FLAGS		= -Wall -Werror
 COMPILE_FLAGS	= $(FLAGS) -c -fPIC
-SHARED_FLAGS	= $(FLAGS) -shared -fPIC -o $(LIBRESISTANCE).so 
+SHARED_FLAGS	= $(FLAGS) -shared -fPIC -o $(LIB).so 
 COMPLETE_FLAGS  = $(FLAGS) -lm -o $(EXEC_FILE)
 
 # Base filenames
 MAIN		= electrotest
-LIBRESISTANCE	= libresistance
+LIB		= libresistance
 
 # Finished program name
 EXEC_FILE 	 = electrotest
@@ -20,30 +21,36 @@ EXEC_FILE 	 = electrotest
 
 all: $(EXEC_FILE)
 
-# To create program1 we need the compiled files to complete the program.
-$(EXEC_FILE): $(MAIN).c $(LIBRESISTANCE).so
+# Target "all" will build a complete program.
+# If library is missing, it will be built also (that's how I interpret
+# the target name ("all").
+$(EXEC_FILE): $(MAIN).c $(LIB).h $(LIB).so
 	$(CC) $^ $(COMPLETE_FLAGS)
 
-$(LIBRESISTANCE).so: $(LIBRESISTANCE).o 
+$(LIB).so: $(LIB).o 
 	$(CC) $(SHARED_FLAGS) $^
 
-$(LIBRESISTANCE).o: $(LIBRESISTANCE).c $(LIBRESISTANCE).h
-	$(CC) $(COMPILE_FLAGS) $^
+# Target "lib" will build the library only
+lib: $(LIB).o
+	$(CC) $(SHARED_FLAGS) $^
 
+# Will compile the library source code
+$(LIB).c:
+	$(CC) $(COMPILE_FLAGS) $^
 
 .PHONY: clean
 clean:
-	rm -f *.o *.gch
+	rm -f *.o
 	# Removed build files
 
-
+# Target "install" will build the library and then install it
 .PHONY: install
-install: $(LIBRESISTANCE).so
+install: $(LIB).so
 	sudo cp $^ /usr/lib/$^
 	# Finished task install.
 
 
 .PHONY: uninstall
 uninstall:
-	sudo rm /usr/lib/$(LIBRESISTANCE).so
+	sudo rm /usr/lib/$(LIB).so
 	# Finished task uninstall.
