@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "resistance.h"
+#include "libresistance.h"
 
 float* new_array(int);
 
