@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
     //libpower
     
     //libcomponent (behöver orig_res från libresistance)
-	float *r_pointer;
+    float *r_pointer;
     float resistors[3];
     r_pointer = resistors;
 
