@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 int main(int argc, char *argv[]) {
     float resistance = 0;
@@ -59,6 +60,7 @@ int main(int argc, char *argv[]) {
 
     //result are printed out
     printf("Ersättningsresistans: %d ohm\n", resistance);
+    effect = ceilf(effect * 100) / 100; //round up 2 dec points
     printf("Effekt: %d W\n", effect);
     printf("Ersättningsresistanser i E12-serien kopplade i serie: ");
 
