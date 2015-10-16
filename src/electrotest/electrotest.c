@@ -8,12 +8,16 @@
 #include <string.h>
 
 int main(int argc, char *argv[]) {
-    float current = 0;
+    float resistance = 0;
+    float effect = 0;
+    
+
+    float volt = 0;
     char coupling = '';
     int num_components = 0;
     //input
     printf("Ange spänningskälla i V: ");
-    scanf("%f", &current);
+    scanf("%f", &volt);
     getchar();
     printf("Ange koppling [S | P]: ");
     scanf(" %c", &coupling);
@@ -24,7 +28,7 @@ int main(int argc, char *argv[]) {
     //libresistance
     
     //libpower
-    
+    effect = calc_power_r(volt, resistance);
     //libcomponent (behöver orig_res från libresistance)
     float *r_pointer;
     float resistors[3];
@@ -52,6 +56,11 @@ int main(int argc, char *argv[]) {
         }
     }
     printf("Ny ersättningsresistans: %g", newtotal);
+
+    //result are printed out
+    printf("Ersättningsresistans: %d ohm\n", resistance);
+    printf("Effekt: %d W\n", effect);
+    printf("Ersättningsresistanser i E12-serien kopplade i serie: ");
 
     return 0;
 }
