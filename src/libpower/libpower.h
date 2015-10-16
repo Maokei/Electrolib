@@ -1,7 +1,7 @@
 /**
  * @author Rickard Johansson
  * @file libpower.h
- *
+ * @brief libpower is used to calculate the power(P) current heating effect.
  * */
 
 #include <math.h>
