@@ -26,10 +26,12 @@ int main(int argc, char *argv[]) {
     printf("Antal komponenter: ");
     scanf("%d", num_component);
     getchar();
+    
     //libresistance
     
     //libpower
     effect = calc_power_r(volt, resistance);
+    
     //libcomponent (behöver orig_res från libresistance)
     float *r_pointer;
     float resistors[3];
@@ -58,10 +60,13 @@ int main(int argc, char *argv[]) {
     }
     printf("Ny ersättningsresistans: %g", newtotal);
 
-    //result are printed out
+    //results
+    //print resistance
     printf("Ersättningsresistans: %d ohm\n", resistance);
+    //print effect
     effect = ceilf(effect * 100) / 100; //round up 2 dec points
     printf("Effekt: %d W\n", effect);
+    //print 
     printf("Ersättningsresistanser i E12-serien kopplade i serie: ");
 
     return 0;
