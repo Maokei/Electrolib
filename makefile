@@ -1,6 +1,6 @@
 # Sanel Merdovic
-# 2015-10-17
-# Rev. 0.1
+# 2015-10-18
+# Rev. 0.2
 
 # Compiler directive
 CC = gcc
@@ -20,7 +20,7 @@ LIBPOWER		= libpower
 LIBPOWER_PATH		= src/libpower/
 LIBCOMPONENT		= libcomponent
 LIBCOMPONENT_PATH	= src/libcomponent/
-
+LIBPATH			= lib/
 
 # Finished program name
 EXEC_FILE 	 = electrotest
@@ -32,31 +32,35 @@ all: $(EXEC_FILE)
 # If a library is missing, it will be built also (that's how I interpret
 # the target name ("all").
 
-$(EXEC_FILE): $(MAIN).c $(LIBRESISTANCE_PATH)$(LIBRESISTANCE).h $(LIBRESISTANCE_PATH)$(LIBRESISTANCE).so \
-              $(LIBPOWER_PATH)$(LIBPOWER).h $(LIBPOWER_PATH)$(LIBPOWER).so \
-              $(LIBCOMPONENT_PATH)$(LIBCOMPONENT).h $(LIBCOMPONENT_PATH)$(LIBCOMPONENT).so
+$(EXEC_FILE): $(MAIN).c $(LIBRESISTANCE_PATH)$(LIBRESISTANCE).h $(LIBPATH)$(LIBRESISTANCE).so \
+              $(LIBPOWER_PATH)$(LIBPOWER).h $(LIBPATH)$(LIBPOWER).so \
+              $(LIBCOMPONENT_PATH)$(LIBCOMPONENT).h $(LIBPATH)$(LIBCOMPONENT).so
 	$(CC) $^ $(COMPLETE_FLAGS)
 
-$(LIBRESISTANCE_PATH)$(LIBRESISTANCE).so: $(LIBRESISTANCE_PATH)$(LIBRESISTANCE).o 
-	$(CC) $(SHARED_FLAGS)$(LIBRESISTANCE_PATH)$(LIBRESISTANCE).so $^
+$(LIBPATH)$(LIBRESISTANCE).so: $(LIBRESISTANCE_PATH)$(LIBRESISTANCE).o 
+	sudo mkdir -pv $(LIBPATH)
+	$(CC) $(SHARED_FLAGS)$(LIBPATH)$(LIBRESISTANCE).so $^
 
-$(LIBPOWER_PATH)$(LIBPOWER).so: $(LIBPOWER_PATH)$(LIBPOWER).o 
-	$(CC) $(SHARED_FLAGS)$(LIBPOWER_PATH)$(LIBPOWER).so $^
+$(LIBPATH)$(LIBPOWER).so: $(LIBPOWER_PATH)$(LIBPOWER).o 
+	sudo mkdir -pv $(LIBPATH)
+	$(CC) $(SHARED_FLAGS)$(LIBPATH)$(LIBPOWER).so $^
 
-$(LIBCOMPONENT_PATH)$(LIBCOMPONENT).so: $(LIBCOMPONENT_PATH)$(LIBCOMPONENT).o 
-	$(CC) $(SHARED_FLAGS)$(LIBCOMPONENT_PATH)$(LIBCOMPONENT).so $^
+$(LIBPATH)$(LIBCOMPONENT).so: $(LIBCOMPONENT_PATH)$(LIBCOMPONENT).o 
+	sudo mkdir -pv $(LIBPATH)
+	$(CC) $(SHARED_FLAGS)$(LIBPATH)$(LIBCOMPONENT).so $^
 
 
 # Target "lib" will build only the libraries (all three)
 lib: $(LIBRESISTANCE_PATH)$(LIBRESISTANCE).o \
      $(LIBPOWER_PATH)$(LIBPOWER).o \
      $(LIBCOMPONENT_PATH)$(LIBCOMPONENT).o
-	$(CC) $(SHARED_FLAGS) $(LIBRESISTANCE_PATH)$(LIBRESISTANCE).so $^
-	$(CC) $(SHARED_FLAGS) $(LIBPOWER_PATH)$(LIBPOWER).so $^
-	$(CC) $(SHARED_FLAGS) $(LIBCOMPONENT_PATH)$(LIBCOMPONENT).so $^
+	sudo mkdir -pv $(LIBPATH)
+	$(CC) $(SHARED_FLAGS) $(LIBPATH)$(LIBRESISTANCE).so $^
+	$(CC) $(SHARED_FLAGS) $(LIBPATH)$(LIBPOWER).so $^
+	$(CC) $(SHARED_FLAGS) $(LIBPATH)$(LIBCOMPONENT).so $^
 
 
-# Will compile the library source code
+# Will compile the library source code, i.e. create .o-files
 $(LIBRESISTANCE_PATH)$(LIBRESISTANCE).c:
 	$(CC) $(COMPILE_FLAGS) $^
 $(LIBPOWER_PATH)$(LIBPOWER).c:
