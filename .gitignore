@@ -1,6 +1,7 @@
 # Libcomponent program
 src/libcomponent/program_libcomp
-
+# Built local program
+electrotest
 
 # Compiled source #
 ###################
