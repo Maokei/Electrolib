@@ -8,7 +8,9 @@ CC = gcc
 # Flags
 FLAGS		= -Wall -Werror
 COMPILE_FLAGS	= $(FLAGS) -c -fPIC
-SHARED_FLAGS	= $(FLAGS) -shared -fPIC -o 
+#SHARED_FLAGS	= $(FLAGS) -shared -fPIC -o 
+SHARED_FLAGS	= -shared -fPIC -o 
+#COMPLETE_FLAGS  = $(FLAGS) -Llib -lcomponent -lresistance -lpower -o $(EXEC_FILE), -Wl,-rpath,lib
 COMPLETE_FLAGS  = $(FLAGS) -lm -o $(EXEC_FILE)
 
 # Base filenames
@@ -33,21 +35,21 @@ all: $(EXEC_FILE)
 # the target name ("all").
 
 $(EXEC_FILE): $(MAIN).c $(LIBRESISTANCE_PATH)$(LIBRESISTANCE).h $(LIBPATH)$(LIBRESISTANCE).so \
-              $(LIBPOWER_PATH)$(LIBPOWER).h $(LIBPATH)$(LIBPOWER).so \
-              $(LIBCOMPONENT_PATH)$(LIBCOMPONENT).h $(LIBPATH)$(LIBCOMPONENT).so
+              $(LIBCOMPONENT_PATH)$(LIBCOMPONENT).h $(LIBPATH)$(LIBCOMPONENT).so \
+              $(LIBPOWER_PATH)$(LIBPOWER).h $(LIBPATH)$(LIBPOWER).so
 	$(CC) $^ $(COMPLETE_FLAGS)
 
 $(LIBPATH)$(LIBRESISTANCE).so: $(LIBRESISTANCE_PATH)$(LIBRESISTANCE).o 
 	sudo mkdir -pv $(LIBPATH)
-	$(CC) $(SHARED_FLAGS)$(LIBPATH)$(LIBRESISTANCE).so $^
+	$(CC) $(SHARED_FLAGS) $(LIBPATH)$(LIBRESISTANCE).so $^
 
 $(LIBPATH)$(LIBPOWER).so: $(LIBPOWER_PATH)$(LIBPOWER).o 
 	sudo mkdir -pv $(LIBPATH)
-	$(CC) $(SHARED_FLAGS)$(LIBPATH)$(LIBPOWER).so $^
+	$(CC) $(SHARED_FLAGS) $(LIBPATH)$(LIBPOWER).so $^
 
 $(LIBPATH)$(LIBCOMPONENT).so: $(LIBCOMPONENT_PATH)$(LIBCOMPONENT).o 
 	sudo mkdir -pv $(LIBPATH)
-	$(CC) $(SHARED_FLAGS)$(LIBPATH)$(LIBCOMPONENT).so $^
+	$(CC) $(SHARED_FLAGS) $(LIBPATH)$(LIBCOMPONENT).so $^
 
 
 # Target "lib" will build only the libraries (all three)
@@ -61,11 +63,11 @@ lib: $(LIBRESISTANCE_PATH)$(LIBRESISTANCE).o \
 
 
 # Will compile the library source code, i.e. create .o-files
-$(LIBRESISTANCE_PATH)$(LIBRESISTANCE).c:
+$(LIBPATH)$(LIBRESISTANCE).o: $(LIBRESISTANCE_PATH)$(LIBRESISTANCE).c
 	$(CC) $(COMPILE_FLAGS) $^
-$(LIBPOWER_PATH)$(LIBPOWER).c:
+$(LIBPATH)$(LIBPOWER).o: $(LIBPOWER_PATH)$(LIBPOWER).c
 	$(CC) $(COMPILE_FLAGS) $^
-$(LIBCOMPONENT_PATH)$(LIBCOMPONENT).c:
+$(LIBPATH)$(LIBCOMPONENT).o: $(LIBCOMPONENT_PATH)$(LIBCOMPONENT).C
 	$(CC) $(COMPILE_FLAGS) $^
 
 
