@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "libresistance.h"
 
 /**
 * count - amount of components in the chosen conection type
