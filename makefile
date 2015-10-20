@@ -9,11 +9,12 @@ CC = gcc
 FLAGS			= -Wall -Werror
 COMPILE			= $(FLAGS) -c -fPIC
 SHARE			= $(FLAGS) -shared -fPIC -o
-LOCAL_LD		= $(FLAGS) -Wl,-rpath,./$(LPATH) -lm -o $(EXEC_FILE)
+LOCAL_LD		= $(FLAGS) $(LSHARED) -lm -Wl,-rpath,lib -o $(EXEC_FILE)
 GLOBAL_LD		= $(FLAGS) -lresistance -lpower -lcomponent -lm -o /usr/bin/$(EXEC_FILE)
 
 # Program file
-EXEC_FILE = electrotest
+EXEC_FILE	= electrotest
+PROG_SOURCE = $(EXEC_FILE).c
 
 # Library names
 LRES 	= libresistance
@@ -32,15 +33,16 @@ LPATH 			= lib
 LSOURCE 	= $(LRES_PATH)/$(LRES).c $(LPOW_PATH)/$(LPOW).c $(LCOMP_PATH)/$(LCOMP).c
 LOBJECTS 	= $(LRES_PATH)/$(LRES).o $(LPOW_PATH)/$(LPOW).o $(LCOMP_PATH)/$(LCOMP).o
 LHEADERS	= $(LRES_PATH)/$(LRES).h $(LPOW_PATH)/$(LPOW).h $(LCOMP_PATH)/$(LCOMP).h
+LSHARED		= $(LPATH)/$(LRES).so $(LPATH)/$(LPOW).so $(LPATH)/$(LCOMP).so
 
-all: lib
+all: lib $(EXEC_FILE)
 
 # Target "all" will build a complete program.
 # If a library is missing, it will be built also (that's how I interpret
 # the target name ("all").
 
-$(EXEC_FILE): $(EXEC_PATH)/$(EXEC_FILE) $(LSOURCE) $(LHEADERS) $(LOBJECTS)
-	$(CC) $< $(LOCAL_LD)
+$(EXEC_FILE): $(EXEC_PATH)/$(PROG_SOURCE) $(LSOURCE) $(LHEADERS) $(LOBJECTS)
+	$(CC) $< $(LOCAL_LD) 
 
 # Target "lib" will build only the local shared objects to lib/ (all three)
 lib: $(LOBJECTS)
@@ -72,8 +74,10 @@ clean:
 
 # Target "install" will build the library and then install it
 .PHONY: install
-install: $(LIBRESISTANCE_PATH)$(LIBRESISTANCE).so
-	sudo cp $^ /usr/lib/
+install: $(EXEC_PATH)/$(PROG_SOURCE) $(LSHARED)
+	cp $(LSHARED) -t /usr/lib
+	ldconfig
+	$(CC) $< $(GLOBAL_LD)
 	# Finished task install.
 
 
