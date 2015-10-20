@@ -1,5 +1,7 @@
 # Libcomponent program
 src/libcomponent/program_libcomp
+src/libresistance/electrotest
+
 # Built local program
 electrotest
 

@@ -1,81 +1,73 @@
-# Sanel Merdovic
-# 2015-10-18
-# Rev. 0.2
+# Sanel Merdovic, Niklas Andersson
+# 2015-10-20
+# Rev. 0.3
 
 # Compiler directive
 CC = gcc
 
-# Flags
-FLAGS		= -Wall -Werror
-COMPILE_FLAGS	= $(FLAGS) -c -fPIC
-#SHARED_FLAGS	= $(FLAGS) -shared -fPIC -o 
-SHARED_FLAGS	= -shared -fPIC -o 
-#COMPLETE_FLAGS  = $(FLAGS) -Llib -lcomponent -lresistance -lpower -o $(EXEC_FILE), -Wl,-rpath,lib
-COMPLETE_FLAGS  = $(FLAGS) -lm -o $(EXEC_FILE)
+# Flags & commands
+FLAGS			= -Wall -Werror
+COMPILE			= $(FLAGS) -c -fPIC
+SHARE			= $(FLAGS) -shared -fPIC -o
+LOCAL_LD		= $(FLAGS) -Wl,-rpath,./$(LPATH) -lm -o $(EXEC_FILE)
+GLOBAL_LD		= $(FLAGS) -lresistance -lpower -lcomponent -lm -o /usr/bin/$(EXEC_FILE)
 
-# Base filenames
-#
-MAIN			= src/electrotest/electrotest
-LIBRESISTANCE		= libresistance
-LIBRESISTANCE_PATH	= src/libresistance/
-LIBPOWER		= libpower
-LIBPOWER_PATH		= src/libpower/
-LIBCOMPONENT		= libcomponent
-LIBCOMPONENT_PATH	= src/libcomponent/
-LIBPATH			= lib/
+# Program file
+EXEC_FILE = electrotest
 
-# Finished program name
-EXEC_FILE 	 = electrotest
+# Library names
+LRES 	= libresistance
+LCOMP	= libcomponent
+LPOW	= libpower
 
+# Paths
+SOURCE_PATH		= src
+LRES_PATH 		= $(SOURCE_PATH)/$(LRES)
+LPOW_PATH		= $(SOURCE_PATH)/$(LPOW)
+LCOMP_PATH		= $(SOURCE_PATH)/$(LCOMP)
+EXEC_PATH		= $(SOURCE_PATH)/$(EXEC_FILE)
+LPATH 			= lib
 
-all: $(EXEC_FILE)
+# Lists
+LSOURCE 	= $(LRES_PATH)/$(LRES).c $(LPOW_PATH)/$(LPOW).c $(LCOMP_PATH)/$(LCOMP).c
+LOBJECTS 	= $(LRES_PATH)/$(LRES).o $(LPOW_PATH)/$(LPOW).o $(LCOMP_PATH)/$(LCOMP).o
+LHEADERS	= $(LRES_PATH)/$(LRES).h $(LPOW_PATH)/$(LPOW).h $(LCOMP_PATH)/$(LCOMP).h
+
+all: lib
 
 # Target "all" will build a complete program.
 # If a library is missing, it will be built also (that's how I interpret
 # the target name ("all").
 
-$(EXEC_FILE): $(MAIN).c $(LIBRESISTANCE_PATH)$(LIBRESISTANCE).h $(LIBPATH)$(LIBRESISTANCE).so \
-              $(LIBCOMPONENT_PATH)$(LIBCOMPONENT).h $(LIBPATH)$(LIBCOMPONENT).so \
-              $(LIBPOWER_PATH)$(LIBPOWER).h $(LIBPATH)$(LIBPOWER).so
-	$(CC) $^ $(COMPLETE_FLAGS)
+$(EXEC_FILE): $(EXEC_PATH)/$(EXEC_FILE) $(LSOURCE) $(LHEADERS) $(LOBJECTS)
+	$(CC) $< $(LOCAL_LD)
 
-$(LIBPATH)$(LIBRESISTANCE).so: $(LIBRESISTANCE_PATH)$(LIBRESISTANCE).o 
-	sudo mkdir -pv $(LIBPATH)
-	$(CC) $(SHARED_FLAGS) $(LIBPATH)$(LIBRESISTANCE).so $^
-
-$(LIBPATH)$(LIBPOWER).so: $(LIBPOWER_PATH)$(LIBPOWER).o 
-	sudo mkdir -pv $(LIBPATH)
-	$(CC) $(SHARED_FLAGS) $(LIBPATH)$(LIBPOWER).so $^
-
-$(LIBPATH)$(LIBCOMPONENT).so: $(LIBCOMPONENT_PATH)$(LIBCOMPONENT).o 
-	sudo mkdir -pv $(LIBPATH)
-	$(CC) $(SHARED_FLAGS) $(LIBPATH)$(LIBCOMPONENT).so $^
-
-
-# Target "lib" will build only the libraries (all three)
-lib: $(LIBRESISTANCE_PATH)$(LIBRESISTANCE).o \
-     $(LIBPOWER_PATH)$(LIBPOWER).o \
-     $(LIBCOMPONENT_PATH)$(LIBCOMPONENT).o
-	sudo mkdir -pv $(LIBPATH)
-	$(CC) $(SHARED_FLAGS) $(LIBPATH)$(LIBRESISTANCE).so $^
-	$(CC) $(SHARED_FLAGS) $(LIBPATH)$(LIBPOWER).so $^
-	$(CC) $(SHARED_FLAGS) $(LIBPATH)$(LIBCOMPONENT).so $^
+# Target "lib" will build only the local shared objects to lib/ (all three)
+lib: $(LOBJECTS)
+	mkdir -pv $(LPATH)
+	$(CC) $(SHARE) $(LPATH)/$(LRES).so $(LRES_PATH)/$(LRES).o 
+	$(CC) $(SHARE) $(LPATH)/$(LPOW).so $(LPOW_PATH)/$(LPOW).o
+	$(CC) $(SHARE) $(LPATH)/$(LCOMP).so $(LCOMP_PATH)/$(LCOMP).o
 
 
 # Will compile the library source code, i.e. create .o-files
-$(LIBPATH)$(LIBRESISTANCE).o: $(LIBRESISTANCE_PATH)$(LIBRESISTANCE).c
-	$(CC) $(COMPILE_FLAGS) $^
-$(LIBPATH)$(LIBPOWER).o: $(LIBPOWER_PATH)$(LIBPOWER).c
-	$(CC) $(COMPILE_FLAGS) $^
-$(LIBPATH)$(LIBCOMPONENT).o: $(LIBCOMPONENT_PATH)$(LIBCOMPONENT).C
-	$(CC) $(COMPILE_FLAGS) $^
+$(LRES_PATH)/$(LRES).o: $(LRES_PATH)/$(LRES).c $(LRES_PATH)/$(LRES).h
+	$(CC) $(COMPILE) $^
+	mv $(LRES).o $(LRES_PATH)/
 
+$(LPOW_PATH)/$(LPOW).o: $(LPOW_PATH)/$(LPOW).c $(LPOW_PATH)/$(LPOW).h
+	$(CC) $(COMPILE) $^
+	mv $(LPOW).o $(LPOW_PATH)/
+
+$(LCOMP_PATH)/$(LCOMP).o: $(LCOMP_PATH)/$(LCOMP).c $(LCOMP_PATH)/$(LCOMP).h
+	$(CC) $(COMPILE) $^
+	mv $(LCOMP).o $(LCOMP_PATH)/
 
 .PHONY: clean
 clean:
-	sudo rm -f $(LIBRESISTANCE_PATH)*.o
-	sudo rm -f $(LIBPOWER_PATH)*.o
-	sudo rm -f $(LIBCOMPONENT_PATH)*.o
+	rm -f $(LRES_PATH)/*.o
+	rm -f $(LPOW_PATH)/*.o
+	rm -f $(LCOMP_PATH)/*.o
 	# Removed build files
 
 # Target "install" will build the library and then install it
