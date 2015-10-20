@@ -1,6 +1,4 @@
-#include <math.h>
-#include <stdio.h>
-#include <stdbool.h>
+#include "libcomponent.h"
 
 /**
  * Fills res_array with e12 resistors, returns an integer with
