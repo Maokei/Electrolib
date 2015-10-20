@@ -6,7 +6,8 @@ CC = gcc
 FLAGS			= -Wall -Werror
 COMPILE_FLAGS	= $(FLAGS) -c -fPIC
 SHARED_FLAGS	= $(FLAGS) -shared -fPIC -o $(LIBCOMPONENT).so 
-COMPLETE_FLAGS  = $(FLAGS) -L. -lm -lcomponent -Wl,-rpath,. -o $(EXEC_FILE)
+COMPLETE_FLAGS  = $(FLAGS) -L. -lm -Wl,-rpath,. -o $(EXEC_FILE)
+RELINK_FLAGS 	= $(FLAGS) -lcomponent -lm -o $(EXEC_FILE)
 
 # Base filenames
 MAIN			= main
@@ -37,8 +38,11 @@ clean:
 
 
 .PHONY: install
-install: $(LIBCOMPONENT).so
-	sudo cp $^ /usr/lib/$^
+install: $(LIBCOMPONENT).so $(MAIN).c
+	cp $< /usr/lib/$<
+	ldconfig
+	# Relink program
+	$(CC) $^ $(RELINK_FLAGS)
 	# Finished task install.
 
 
