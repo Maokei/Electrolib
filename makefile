@@ -9,7 +9,7 @@ CC = gcc
 FLAGS			= -Wall -Werror
 COMPILE			= $(FLAGS) -c -fPIC
 SHARE			= $(FLAGS) -shared -fPIC -o
-LOCAL_LD		= $(FLAGS) $(LSHARED) -lm -Wl,-rpath,lib -o $(EXEC_FILE)
+LOCAL_LD		= $(FLAGS) $(LSHARED) -lm -o $(EXEC_FILE)
 GLOBAL_LD		= $(FLAGS) -lresistance -lpower -lcomponent -lm -o /usr/bin/$(EXEC_FILE)
 
 # Program file
@@ -83,5 +83,6 @@ install: $(EXEC_PATH)/$(PROG_SOURCE) $(LSHARED)
 
 .PHONY: uninstall
 uninstall:
-	sudo rm /usr/lib/$(LIBRESISTANCE).so
+	rm /usr/lib/$(LRES).so /usr/lib/$(LPOW).so /usr/lib/$(LCOMP).so
+	rm /usr/bin/$(EXEC_FILE)
 	# Finished task uninstall.
