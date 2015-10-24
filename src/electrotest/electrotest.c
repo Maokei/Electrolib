@@ -2,7 +2,7 @@
  * @file electrotest.cc
  * @authors Rickard Johansson, Niklas Andersson, Sanel Merdovic
  * @brief Test application for the following libraries libresistance.so, libpower.so and libcomponent.so
- * @brief 2015-10-17
+ * @brief 2015-10-24
  * */
 
 #include <stdio.h>
@@ -59,6 +59,10 @@ int main(int argc, char *argv[]) {
     if(orig_res != -1) {
         printf("Total Resistance is: %6.2f Ohm\n", orig_res);
     }
+    else {
+	printf("Bad input values! Exiting...\n");
+	exit(1);
+}
 
     //libpower
     effect = calc_power_r(volt, orig_res);
