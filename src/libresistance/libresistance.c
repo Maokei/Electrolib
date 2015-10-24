@@ -29,6 +29,16 @@ float calc_resistance(int count, char conn, float *array)
 
  }
 
+ /* Check that all supplied values are > 0 (can't have negative resistance). */
+ 
+ for(i = 0; i < count; i++) {
+	if(array[i] < 0.0) {
+	 printf("\nNegative resistance is not valid!\n");
+	 return -1;
+ 	}
+
+ }
+
  /* Compute total resistance based on chosen connection type. */
  if(conn == 'P' || conn == 'p')
  {
