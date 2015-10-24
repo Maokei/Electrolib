@@ -2,7 +2,7 @@
 
 float calc_power_r(float volt, float resistance) {
     if(resistance  == 0) {
-        return -1;
+        return 0;
     }
     return powf(volt,2) / resistance;
 }
