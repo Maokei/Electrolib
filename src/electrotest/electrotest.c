@@ -3,6 +3,17 @@
  * @authors Rickard Johansson, Niklas Andersson, Sanel Merdovic
  * @brief Test application for the following libraries libresistance.so, libpower.so and libcomponent.so
  * @brief 2015-10-24
+ * *       ▄▄▄▀▀▀▄▄███▄
+ * ░░░░░▄▀▀░░░░░░░▐░▀██▌
+ * ░░░▄▀░░░░▄▄███░▌▀▀░▀█
+ * ░░▄█░░▄▀▀▒▒▒▒▒▄▐░░░░█▌
+ * ░▐█▀▄▀▄▄▄▄▀▀▀▀▌░░░░░▐█▄
+ * ░▌▄▄▀▀░░░░░░░░▌░░░░▄███████▄
+ * ░░░░░░░░░░░░░▐░░░░▐███████████▄
+ * ░le code░░░░░░▐░░░░▐█████████████▄
+ * ░░░░tucan░░░░░░▀▄░░░▐██████████████▄
+ * ░░░░░░has░░░░░░░░▀▄▄████████████████▄
+ * ░░░░░arrived░░░░░░░░░░░░█▀██████
  * */
 
 #include <stdio.h>
