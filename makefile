@@ -83,6 +83,6 @@ install: $(EXEC_PATH)/$(PROG_SOURCE) $(LSHARED)
 
 .PHONY: uninstall
 uninstall:
-	rm /usr/lib/$(LRES).so /usr/lib/$(LPOW).so /usr/lib/$(LCOMP).so
-	rm /usr/bin/$(EXEC_FILE)
+	rm -f /usr/lib/$(LRES).so /usr/lib/$(LPOW).so /usr/lib/$(LCOMP).so
+	rm -f /usr/bin/$(EXEC_FILE)
 	# Finished task uninstall.
