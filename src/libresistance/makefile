@@ -1,5 +1,5 @@
 # Sanel Merdovic
-# 2015-10-09
+# 2015-10-26
 
 # Compiler directive
 CC = gcc
@@ -46,13 +46,13 @@ clean:
 # Target "install" will build the library and then install it
 .PHONY: install
 install: $(LIB).so
-	sudo cp $^ /usr/lib/$^
-	sudo cp $(EXEC_FILE) /usr/bin/$(EXEC_FILE)
+	cp $^ /usr/lib/$^
+	cp $(EXEC_FILE) /usr/bin/$(EXEC_FILE)
 	# Finished task install.
 
 
 .PHONY: uninstall
 uninstall:
-	sudo rm -f /usr/lib/$(LIB).so
-	sudo rm -f /usr/bin/$(EXEC_FILE)
+	rm -f /usr/lib/$(LIB).so
+	rm -f /usr/bin/$(EXEC_FILE)
 	# Finished task uninstall.
